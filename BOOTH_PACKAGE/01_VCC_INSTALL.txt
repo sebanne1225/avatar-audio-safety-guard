@@ -1,0 +1,17 @@
+Avatar Audio Safety Guard
+VCC / VPM 導入手順
+
+推奨導入方法:
+VCC / VPM から導入してください。
+
+手順:
+1. VCC を開き、Settings -> Packages -> Add Repositoryをクリックします
+2. VPM source に次の URL を追加します
+   https://sebanne1225.github.io/sebanne-vpm-listing/source.json
+3. package 一覧から
+   Avatar Audio Safety Guard
+   を追加します
+4. Unity を開き、package を導入します
+
+repo:
+https://github.com/sebanne1225/avatar-audio-safety-guard
