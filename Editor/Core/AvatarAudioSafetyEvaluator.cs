@@ -55,6 +55,10 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
 
         public float FarDistance { get; set; }
 
+        public float NearDistance { get; set; }
+
+        public float VolumetricRadius { get; set; }
+
         public AvatarAudioSafetyRule AppliedRule { get; set; }
 
         public AvatarAudioSafetyResultKind Result { get; set; }
@@ -100,6 +104,8 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
                 Volume = request.AudioSource.volume,
                 Gain = request.SpatialAudio.Gain,
                 FarDistance = request.SpatialAudio.FarDistance,
+                NearDistance = request.SpatialAudio.NearDistance,
+                VolumetricRadius = request.SpatialAudio.VolumetricRadius,
                 AppliedRule = request.AppliedRule,
             };
 
@@ -148,6 +154,20 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
             {
                 wouldClamp = true;
                 plannedChanges.Add(string.Format("Far {0:0.##} -> {1:0.##}", evaluation.FarDistance, request.Thresholds.maxFarDistance));
+            }
+
+            float effectiveFarDistance = Mathf.Min(evaluation.FarDistance, request.Thresholds.maxFarDistance);
+
+            if (request.SpatialAudio.HasComponent && evaluation.NearDistance > effectiveFarDistance)
+            {
+                wouldClamp = true;
+                plannedChanges.Add(string.Format("Near {0:0.##} -> {1:0.##}", evaluation.NearDistance, effectiveFarDistance));
+            }
+
+            if (request.SpatialAudio.HasComponent && evaluation.VolumetricRadius > effectiveFarDistance)
+            {
+                wouldClamp = true;
+                plannedChanges.Add(string.Format("Volumetric Radius {0:0.##} -> {1:0.##}", evaluation.VolumetricRadius, effectiveFarDistance));
             }
 
             if (evaluation.Volume > request.Thresholds.maxVolume)

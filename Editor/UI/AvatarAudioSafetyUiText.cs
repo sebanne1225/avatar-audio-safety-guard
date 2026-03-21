@@ -237,13 +237,15 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         public static string GetMainInfoTooltip(AvatarAudioScanResult result)
         {
             return string.Format(
-                "パス（Path）: {0}\nAudioClip: {1}\nLoop: {2}\n音量（Volume）: {3:0.##}\nGain: {4:0.##}\n最大距離（Far Distance）: {5:0.##}\nルール（Rule）: {6}",
+                "パス（Path）: {0}\nAudioClip: {1}\nLoop: {2}\n音量（Volume）: {3:0.##}\nGain: {4:0.##}\n最大距離（Far Distance）: {5:0.##}\nNear: {6:0.##}\nVolumetric Radius: {7:0.##}\nルール（Rule）: {8}",
                 result != null && !string.IsNullOrEmpty(result.path) ? result.path : "./",
                 result != null && result.clip != null ? result.clip.name : "-",
                 result != null && result.loop ? "On" : "Off",
                 result != null ? result.volume : 0f,
                 result != null ? result.gain : 0f,
                 result != null ? result.farDistance : 0f,
+                result != null ? result.nearDistance : 0f,
+                result != null ? result.volumetricRadius : 0f,
                 result != null ? GetRuleLabel(result.appliedRule) : GetRuleLabel(AvatarAudioSafetyRule.Default));
         }
 

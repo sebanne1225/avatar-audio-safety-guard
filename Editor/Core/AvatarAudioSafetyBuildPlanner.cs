@@ -42,6 +42,27 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
                 plan.TargetFarDistance = targetFarDistance;
             }
 
+            float effectiveFarDistance = plan.ShouldClampFar ? plan.TargetFarDistance : evaluation.FarDistance;
+
+            if (request.SpatialAudio.HasComponent)
+            {
+                float targetNearDistance = Mathf.Min(evaluation.NearDistance, effectiveFarDistance);
+                if (evaluation.NearDistance - targetNearDistance > Epsilon)
+                {
+                    plan.ShouldClampNear = true;
+                    plan.OriginalNearDistance = evaluation.NearDistance;
+                    plan.TargetNearDistance = targetNearDistance;
+                }
+
+                float targetVolumetricRadius = Mathf.Min(evaluation.VolumetricRadius, effectiveFarDistance);
+                if (evaluation.VolumetricRadius - targetVolumetricRadius > Epsilon)
+                {
+                    plan.ShouldClampVolumetricRadius = true;
+                    plan.OriginalVolumetricRadius = evaluation.VolumetricRadius;
+                    plan.TargetVolumetricRadius = targetVolumetricRadius;
+                }
+            }
+
             float targetGain = Mathf.Min(evaluation.Gain, request.Thresholds.maxGain);
             if (evaluation.Gain - targetGain > Epsilon)
             {

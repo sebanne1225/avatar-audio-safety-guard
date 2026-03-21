@@ -6,11 +6,18 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
 {
     internal readonly struct AvatarAudioSpatialAudioData
     {
-        public AvatarAudioSpatialAudioData(bool hasComponent, float gain, float farDistance)
+        public AvatarAudioSpatialAudioData(
+            bool hasComponent,
+            float gain,
+            float farDistance,
+            float nearDistance,
+            float volumetricRadius)
         {
             HasComponent = hasComponent;
             Gain = gain;
             FarDistance = farDistance;
+            NearDistance = nearDistance;
+            VolumetricRadius = volumetricRadius;
         }
 
         public bool HasComponent { get; }
@@ -18,29 +25,37 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         public float Gain { get; }
 
         public float FarDistance { get; }
+
+        public float NearDistance { get; }
+
+        public float VolumetricRadius { get; }
     }
 
     internal static class AvatarAudioSafetySpatialAudioUtility
     {
         private static readonly string[] GainMemberNames = { "Gain", "gain", "_Gain" };
         private static readonly string[] FarMemberNames = { "Far", "far", "_Far" };
+        private static readonly string[] NearMemberNames = { "Near", "near", "_Near" };
+        private static readonly string[] VolumetricRadiusMemberNames = { "VolumetricRadius", "volumetricRadius", "_VolumetricRadius" };
 
         public static AvatarAudioSpatialAudioData Read(AudioSource audioSource)
         {
             if (audioSource == null)
             {
-                return new AvatarAudioSpatialAudioData(false, 0f, 0f);
+                return new AvatarAudioSpatialAudioData(false, 0f, 0f, 0f, 0f);
             }
 
             Component spatialAudio = audioSource.GetComponent("VRCSpatialAudioSource");
             if (spatialAudio == null)
             {
-                return new AvatarAudioSpatialAudioData(false, 0f, audioSource.maxDistance);
+                return new AvatarAudioSpatialAudioData(false, 0f, audioSource.maxDistance, 0f, 0f);
             }
 
             float gain = ReadFloat(spatialAudio, GainMemberNames, 0f);
             float farDistance = ReadFloat(spatialAudio, FarMemberNames, audioSource.maxDistance);
-            return new AvatarAudioSpatialAudioData(true, gain, farDistance);
+            float nearDistance = ReadFloat(spatialAudio, NearMemberNames, 0f);
+            float volumetricRadius = ReadFloat(spatialAudio, VolumetricRadiusMemberNames, 0f);
+            return new AvatarAudioSpatialAudioData(true, gain, farDistance, nearDistance, volumetricRadius);
         }
 
         public static bool TryWriteGain(AudioSource audioSource, float value)
@@ -51,6 +66,16 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         public static bool TryWriteFarDistance(AudioSource audioSource, float value)
         {
             return TryWrite(audioSource, FarMemberNames, value);
+        }
+
+        public static bool TryWriteNearDistance(AudioSource audioSource, float value)
+        {
+            return TryWrite(audioSource, NearMemberNames, value);
+        }
+
+        public static bool TryWriteVolumetricRadius(AudioSource audioSource, float value)
+        {
+            return TryWrite(audioSource, VolumetricRadiusMemberNames, value);
         }
 
         private static bool TryWrite(AudioSource audioSource, string[] memberNames, float value)

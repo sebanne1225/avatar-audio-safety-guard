@@ -21,6 +21,18 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
 
         public float TargetFarDistance { get; set; }
 
+        public bool ShouldClampNear { get; set; }
+
+        public float OriginalNearDistance { get; set; }
+
+        public float TargetNearDistance { get; set; }
+
+        public bool ShouldClampVolumetricRadius { get; set; }
+
+        public float OriginalVolumetricRadius { get; set; }
+
+        public float TargetVolumetricRadius { get; set; }
+
         public bool ShouldClampGain { get; set; }
 
         public float OriginalGain { get; set; }
@@ -35,7 +47,14 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
 
         public bool ShouldApply
         {
-            get { return ShouldClampFar || ShouldClampGain || ShouldClampVolume; }
+            get
+            {
+                return ShouldClampFar
+                    || ShouldClampNear
+                    || ShouldClampVolumetricRadius
+                    || ShouldClampGain
+                    || ShouldClampVolume;
+            }
         }
 
         public int PlannedChangeCount
@@ -50,6 +69,16 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
                 }
 
                 if (ShouldClampGain)
+                {
+                    count++;
+                }
+
+                if (ShouldClampNear)
+                {
+                    count++;
+                }
+
+                if (ShouldClampVolumetricRadius)
                 {
                     count++;
                 }
@@ -70,6 +99,16 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
             if (ShouldClampFar)
             {
                 changes.Add(string.Format("Far {0:0.##} -> {1:0.##}", OriginalFarDistance, TargetFarDistance));
+            }
+
+            if (ShouldClampNear)
+            {
+                changes.Add(string.Format("Near {0:0.##} -> {1:0.##}", OriginalNearDistance, TargetNearDistance));
+            }
+
+            if (ShouldClampVolumetricRadius)
+            {
+                changes.Add(string.Format("Volumetric Radius {0:0.##} -> {1:0.##}", OriginalVolumetricRadius, TargetVolumetricRadius));
             }
 
             if (ShouldClampGain)

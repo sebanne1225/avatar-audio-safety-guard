@@ -70,6 +70,16 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
                 ApplyFar(audioSource, plan, outcome);
             }
 
+            if (plan.ShouldClampNear)
+            {
+                ApplyNear(audioSource, plan, outcome);
+            }
+
+            if (plan.ShouldClampVolumetricRadius)
+            {
+                ApplyVolumetricRadius(audioSource, plan, outcome);
+            }
+
             if (plan.ShouldClampGain)
             {
                 ApplyGain(audioSource, plan, outcome);
@@ -100,6 +110,40 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
             }
 
             outcome.RecordApplied(string.Format("Far {0:0.##} -> {1:0.##}", plan.OriginalFarDistance, plan.TargetFarDistance));
+        }
+
+        private static void ApplyNear(AudioSource audioSource, AvatarAudioSafetyBuildApplyPlan plan, AvatarAudioSafetyBuildApplyOutcome outcome)
+        {
+            if (!plan.HasSpatialAudioComponent)
+            {
+                outcome.RecordFailure("Near could not be written because VRC Spatial Audio Source is missing");
+                return;
+            }
+
+            if (!AvatarAudioSafetySpatialAudioUtility.TryWriteNearDistance(audioSource, plan.TargetNearDistance))
+            {
+                outcome.RecordFailure("Near could not be written to VRC Spatial Audio Source");
+                return;
+            }
+
+            outcome.RecordApplied(string.Format("Near {0:0.##} -> {1:0.##}", plan.OriginalNearDistance, plan.TargetNearDistance));
+        }
+
+        private static void ApplyVolumetricRadius(AudioSource audioSource, AvatarAudioSafetyBuildApplyPlan plan, AvatarAudioSafetyBuildApplyOutcome outcome)
+        {
+            if (!plan.HasSpatialAudioComponent)
+            {
+                outcome.RecordFailure("Volumetric Radius could not be written because VRC Spatial Audio Source is missing");
+                return;
+            }
+
+            if (!AvatarAudioSafetySpatialAudioUtility.TryWriteVolumetricRadius(audioSource, plan.TargetVolumetricRadius))
+            {
+                outcome.RecordFailure("Volumetric Radius could not be written to VRC Spatial Audio Source");
+                return;
+            }
+
+            outcome.RecordApplied(string.Format("Volumetric Radius {0:0.##} -> {1:0.##}", plan.OriginalVolumetricRadius, plan.TargetVolumetricRadius));
         }
 
         private static void ApplyGain(AudioSource audioSource, AvatarAudioSafetyBuildApplyPlan plan, AvatarAudioSafetyBuildApplyOutcome outcome)
