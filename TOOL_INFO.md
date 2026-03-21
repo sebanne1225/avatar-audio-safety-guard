@@ -16,7 +16,7 @@
 - GitHub repo: `https://github.com/sebanne1225/avatar-audio-safety-guard`
 - changelogUrl: `https://github.com/sebanne1225/avatar-audio-safety-guard/blob/master/CHANGELOG.md`
 - listing repo: `https://github.com/sebanne1225/sebanne-listing`
-- listing page: `https://sebanne1225.github.io/sebanne-listing/`
+- 参考 listing page (`VCC` 追加先ではない): `https://sebanne1225.github.io/sebanne-listing/`
 - VCC に追加する URL: `https://sebanne1225.github.io/sebanne-listing/index.json`
 - listing 側に追加する `githubRepos`: `sebanne1225/avatar-audio-safety-guard`
 - BOOTH 販売名: `Avatar Audio Safety Guard`

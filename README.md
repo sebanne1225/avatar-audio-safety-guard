@@ -34,7 +34,7 @@
 2. package 一覧から `Avatar Audio Safety Guard` (`com.sebanne.avatar-audio-safety-guard`) を追加します。
 3. Unity を開き、依存 package が解決されていることを確認します。
 
-listing page: `https://sebanne1225.github.io/sebanne-listing/`
+参考ページ (`VCC` 追加先ではありません): `https://sebanne1225.github.io/sebanne-listing/`
 
 ### 補助: GitHub / Git URL から導入
 

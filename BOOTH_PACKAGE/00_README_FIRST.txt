@@ -25,7 +25,7 @@ https://github.com/sebanne1225/avatar-audio-safety-guard
 VCC に追加する URL:
 https://sebanne1225.github.io/sebanne-listing/index.json
 
-listing page:
+参考ページ (VCC 追加先ではありません):
 https://sebanne1225.github.io/sebanne-listing/
 
 このフォルダには、BOOTH から購入した方向けの最小案内だけを入れています。

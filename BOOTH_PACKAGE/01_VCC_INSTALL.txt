@@ -5,7 +5,7 @@ VCC / VPM 導入手順
 VCC / VPM から導入してください。
 
 手順:
-1. VCC を開き、Settings -> Packages -> Add Repositoryをクリックします
+1. VCC を開き、Settings -> Packages -> Add Repository から listing repo の index.json を追加してください。
 2. VCC に次の URL を追加します
    https://sebanne1225.github.io/sebanne-listing/index.json
 3. package 一覧から
