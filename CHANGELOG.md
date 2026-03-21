@@ -2,6 +2,15 @@
 
 このファイルは Avatar Audio Safety Guard の変更履歴を管理します。
 
+## [1.0.1] - 2026-03-21
+
+### Changed
+
+- VCC 導線 URL を live の `index.json` に統一
+- README と `BOOTH_PACKAGE` の公開導線表記を調整
+- release zip から内部メモを除外するよう workflow を調整
+- QuickStart の UI 表記を実装上のボタン名に合わせて修正
+
 ## [1.0.0] - 2026-03-21
 
 ### Added

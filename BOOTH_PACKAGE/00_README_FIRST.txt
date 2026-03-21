@@ -1,6 +1,6 @@
 Avatar Audio Safety Guard
 BOOTH 配布パッケージ案内
-version: 1.0.0
+version: 1.0.1
 
 このツールは、VRChat アバター内の AudioSource を診断し、
 公開前に危険な設定や過大な値を見つけやすくする Unity / VRChat 向けツールです。
@@ -22,8 +22,11 @@ version: 1.0.0
 GitHub repo:
 https://github.com/sebanne1225/avatar-audio-safety-guard
 
-VPM source.json:
-https://sebanne1225.github.io/sebanne-vpm-listing/source.json
+VCC に追加する URL:
+https://sebanne1225.github.io/sebanne-listing/index.json
+
+listing page:
+https://sebanne1225.github.io/sebanne-listing/
 
 このフォルダには、BOOTH から購入した方向けの最小案内だけを入れています。
 詳しい仕様や制限事項は README を参照してください。

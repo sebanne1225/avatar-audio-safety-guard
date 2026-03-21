@@ -9,14 +9,15 @@
 - 表示名: `Avatar Audio Safety Guard`
 - Runtime asmdef: `Sebanne.AvatarAudioSafetyGuard`
 - Editor asmdef: `Sebanne.AvatarAudioSafetyGuard.Editor`
-- 初回公開 version: `1.0.0`
+- 現在 version: `1.0.1`
 
 ## 公開メタ情報
 
 - GitHub repo: `https://github.com/sebanne1225/avatar-audio-safety-guard`
 - changelogUrl: `https://github.com/sebanne1225/avatar-audio-safety-guard/blob/master/CHANGELOG.md`
-- listing repo: `https://github.com/sebanne1225/sebanne-vpm-listing`
-- VPM source: `https://sebanne1225.github.io/sebanne-vpm-listing/source.json`
+- listing repo: `https://github.com/sebanne1225/sebanne-listing`
+- listing page: `https://sebanne1225.github.io/sebanne-listing/`
+- VCC に追加する URL: `https://sebanne1225.github.io/sebanne-listing/index.json`
 - listing 側に追加する `githubRepos`: `sebanne1225/avatar-audio-safety-guard`
 - BOOTH 販売名: `Avatar Audio Safety Guard`
 

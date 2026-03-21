@@ -30,18 +30,18 @@
 
 ### 推奨: VCC / VPM から導入
 
-1. VPM source として `https://sebanne1225.github.io/sebanne-vpm-listing/source.json` を追加します。
+1. VCC に追加する URL として `https://sebanne1225.github.io/sebanne-listing/index.json` を追加します。
 2. package 一覧から `Avatar Audio Safety Guard` (`com.sebanne.avatar-audio-safety-guard`) を追加します。
 3. Unity を開き、依存 package が解決されていることを確認します。
 
-listing repo: `https://github.com/sebanne1225/sebanne-vpm-listing`
+listing page: `https://sebanne1225.github.io/sebanne-listing/`
 
 ### 補助: GitHub / Git URL から導入
 
 - repo: `https://github.com/sebanne1225/avatar-audio-safety-guard`
 - Git URL や local package での導入は、開発確認や手動検証向けの補助導線です
 - この方法では `VRChat Avatars` と `NDMF` の依存解決を自分で確認する必要があります
-- GitHub Release には `com.sebanne.avatar-audio-safety-guard-<version>.zip` を添付します。zip 展開後の直下に `package.json` が見える package 構成です。
+- GitHub Release には `com.sebanne.avatar-audio-safety-guard-1.0.1.zip` を添付します。zip 展開後の直下に `package.json` が見える package 構成です。
 
 ## 基本的な使い方
 

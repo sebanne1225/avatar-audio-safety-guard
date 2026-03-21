@@ -83,6 +83,9 @@ jobs:
             fi
           done
 
+          # Keep package docs lightweight and avoid shipping internal prep notes.
+          rm -rf "$staging_dir/Documentation~/notes"
+
           (
             cd "$staging_dir"
             zip -r "$asset_path" . >/dev/null

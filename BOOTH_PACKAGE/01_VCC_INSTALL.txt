@@ -6,8 +6,8 @@ VCC / VPM から導入してください。
 
 手順:
 1. VCC を開き、Settings -> Packages -> Add Repositoryをクリックします
-2. VPM source に次の URL を追加します
-   https://sebanne1225.github.io/sebanne-vpm-listing/source.json
+2. VCC に次の URL を追加します
+   https://sebanne1225.github.io/sebanne-listing/index.json
 3. package 一覧から
    Avatar Audio Safety Guard
    を追加します
