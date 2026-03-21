@@ -1,9 +1,13 @@
 {
   "name": "com.sebanne.avatar-audio-safety-guard",
   "displayName": "Avatar Audio Safety Guard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "unity": "2022.3",
-  "description": "VRChat アバター内の AudioSource を診断し、Build 時に安全側へ補正できる Unity Editor ツールです。",
+  "description": "VRChat アバター内の AudioSource を Dry Run で診断し、必要に応じて Build 時だけ build clone 側へ安全側の補正を適用できる Unity Editor ツールです。",
+  "documentationUrl": "https://github.com/sebanne1225/avatar-audio-safety-guard",
+  "changelogUrl": "https://github.com/sebanne1225/avatar-audio-safety-guard/blob/master/CHANGELOG.md",
+  "licensesUrl": "https://github.com/sebanne1225/avatar-audio-safety-guard/blob/master/LICENSE",
+  "url": "https://github.com/sebanne1225/avatar-audio-safety-guard",
   "author": {
     "name": "sebanne"
   },

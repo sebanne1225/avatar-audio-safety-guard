@@ -1,51 +1,72 @@
 # Avatar Audio Safety Guard
 
-この repository は、VRChat アバター内の AudioSource を診断し、Build 前後で安全側の運用につなげるための Unity Editor ツール package repo です。現時点ではテンプレ repo からの移行直後で、実ツール名への置換と公開向けの土台整備を優先しています。
+`Avatar Audio Safety Guard` は、VRChat アバター内の AudioSource を Dry Run で診断し、必要に応じて Build 時だけ build clone 側へ安全側の補正を適用できる Unity Editor ツールです。
 
-## 概要
+音量や到達距離の設定ミスを Build 前に見つけたいときや、scene / prefab 本体を触らずに Build 時だけ補正したいときに使えます。
 
-`Avatar Audio Safety Guard` は、AudioSource の存在や設定を確認しながら、非破壊かつ Dry Run 優先で安全確認を進めるための Unity Editor ツールです。Runtime と Editor を分離し、package として導入しやすい最小構成を維持しています。
+## 何を解決するツールか
+
+- アバター内の AudioSource 設定を Build 前に一覧で確認できます
+- 問題がありそうな音源だけを Dry Run で洗い出せます
+- 実データは触らず、必要な補正だけを Build 時に build clone 側へ適用できます
 
 ## 何ができるか
 
-- Unity Package として `Avatar Audio Safety Guard` をプロジェクトへ導入できます
-- `Runtime/` と `Editor/` を分離した状態で、診断処理と Editor 拡張を安全に育てられます
-- `Documentation~/` と `Samples~/` を含む標準的な package 骨組みをそのまま利用できます
-- Dry Run と診断ログを重視した実装方針を repo 全体で共有できます
-
-## 現在対応していること
-
-- `AvatarAudioSafetySettings` をアバタールートに付与して設定を保持できます
-- Dry Run で AudioSource を走査し、一覧と簡易 Report Window で確認できます
-- Report Window では `すべて / 問題なし以外 / Build時に補正予定 / 報告のみ / 対象外 / 手動確認` のフィルタを使えます
-- Report Window は `AvatarAudioSafetySettings` に保持された最新の Dry Run 結果を参照して再表示できます
-- ObjectField 中心の一覧 UI で対象 GameObject を追える最小 UI を実装しています
-- NDMF Build pass で、動作モードが `Build時に補正` のときだけ build clone 側へ `Far / Gain / Volume` の補正を適用します
+- アバタールートに `AvatarAudioSafetySettings` を追加して設定を保持できます
+- `AudioSource を走査` で Dry Run 診断を実行できます
+- `検出された AudioSource` 一覧と `診断レポートを開く` から結果を確認できます
+- 結果は `問題なし / 警告 / Build時に補正予定 / 報告のみ / 対象外 / 手動確認` で分類されます
+- `Build時に補正` のときだけ build clone 側へ `Far / Near / Volumetric Radius / Gain / Volume` を補正します
 - Build 時に `scanned / warnings / corrected_sources / report_only / ignored / manual_review` の要約ログを出します
 
-## 使い方
+## 対応環境
 
-1. Unity の Package Manager から、この repo をローカルパッケージまたは Git URL として追加します。
-2. アバタールートに `AvatarAudioSafetySettings` を追加します。
-3. Inspector で Profile、Diagnostics、Per-Source Rules を必要に応じて設定します。
-4. `Scan Audio Sources` を押して Dry Run を実行し、Detected Audio Sources 一覧または `Open Report` で結果を確認します。
+- Unity `2022.3`
+- VRChat Avatars package `>= 3.10.0`
+- NDMF `>= 1.11.0 < 2.0.0-a`
+- VCC / VPM ベースの VRChat プロジェクトを推奨します
 
-## Dry Run / 診断
+## VCC / VPM 導入方法
 
-- 現在の scan は非破壊で、AudioSource の走査と一覧更新だけを行います。
-- `Enabled` がオフでも Dry Run scan 自体は実行できます。Build 時は build clone への補正をスキップします。
-- 最新の Dry Run 結果は `AvatarAudioSafetySettings` に保持され、Report Window はその保存済み結果を読みます。
-- 動作モードが `診断のみ` のときは Build 時も変更しません。`Build時に補正` のときだけ、build clone 側へ補正します。
-- Build summary の `corrected_sources` は、補正された項目数ではなく「補正が入った AudioSource 件数」です。
-- 実際の診断や補正を追加する場合も、対象、変更予定、スキップ理由、失敗理由を追跡できるログ設計を優先します。
-- 既存データを直接壊さない方針を維持し、必要に応じてプレビュー、複製、退避を用意します。
+### 推奨: VCC / VPM から導入
+
+1. VPM source として `https://sebanne1225.github.io/sebanne-vpm-listing/source.json` を追加します。
+2. package 一覧から `Avatar Audio Safety Guard` (`com.sebanne.avatar-audio-safety-guard`) を追加します。
+3. Unity を開き、依存 package が解決されていることを確認します。
+
+listing repo: `https://github.com/sebanne1225/sebanne-vpm-listing`
+
+### 補助: GitHub / Git URL から導入
+
+- repo: `https://github.com/sebanne1225/avatar-audio-safety-guard`
+- Git URL や local package での導入は、開発確認や手動検証向けの補助導線です
+- この方法では `VRChat Avatars` と `NDMF` の依存解決を自分で確認する必要があります
+- GitHub Release には `com.sebanne.avatar-audio-safety-guard-<version>.zip` を添付します。zip 展開後の直下に `package.json` が見える package 構成です。
+
+## 基本的な使い方
+
+1. アバタールートに `AvatarAudioSafetySettings` を追加します。
+2. `動作モード` はまず `診断のみ` のままにします。
+3. `判定プロファイル`、`診断オプション`、`音源ごとの設定` を必要に応じて調整します。
+4. `AudioSource を走査` を押して Dry Run を実行します。
+5. `検出された AudioSource` 一覧と `診断レポートを開く` で結果を確認します。
+6. 問題がないことを確認してから、必要に応じて `Build時に補正` へ切り替えます。
+
+## Dry Run を先に行う流れ
+
+- `AudioSource を走査` は常に非破壊です。scene / prefab 本体は変更しません。
+- `有効化` がオフでも Dry Run 自体は実行できます。Build 時の補正だけを止めたいときに使えます。
+- 最新の Dry Run 結果は `AvatarAudioSafetySettings` に保持され、`診断レポート` から再表示できます。
+- `診断のみ` では Build 時も値を変更しません。`Build時に補正` のときだけ build clone 側へ補正します。
+- `corrected_sources` は、補正された項目数ではなく「補正が入った AudioSource 件数」です。
 
 ## 制限事項
 
-- `Custom Rolloff` の自動補正はまだ行いません。`Manual Review` として扱います。
-- 波形解析や `AudioClip` 自体の加工はまだ未対応です。
-- `Near` や `Volumetric Radius` などの細かい補正はこれからです。
-- 公開向けドキュメントと Samples は骨組みのみで、具体的な使用例はこれから追加します。
+- `Custom Rolloff` の自動補正は行いません。`手動確認` として扱います。
+- `VRC Spatial Audio Source` が未設定の AudioSource は警告できますが、自動追加はしません。
+- `Near` と `Volumetric Radius` は、現在の有効 `Far` を超えている場合だけ build clone 側で補正します。個別の上限値はまだ設定できません。
+- 波形解析や `AudioClip` 自体の加工は未対応です。
+- `Samples~` はまだ実例入りではなく、最小の骨組みのみです。
 
 ## ライセンス
 
