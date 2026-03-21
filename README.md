@@ -1,64 +1,52 @@
-# Sebanne Tool Template
+# Avatar Audio Safety Guard
 
-この repository は完成済みツールではなく、VRChat 向け Unity Editor ツールを作り始めるためのテンプレ repo です。複製後に命名や実装を置き換え、各ツール専用の package として育てる前提で用意しています。
+この repository は、VRChat アバター内の AudioSource を診断し、Build 前後で安全側の運用につなげるための Unity Editor ツール package repo です。現時点ではテンプレ repo からの移行直後で、実ツール名への置換と公開向けの土台整備を優先しています。
 
 ## 概要
 
-`Sebanne Tool Template` は、VRChat 向け Unity Editor ツールを UPM 形式で整理して開発するためのテンプレートです。Runtime と Editor の責務を分離し、配布・再利用しやすい最小構成を用意しています。
+`Avatar Audio Safety Guard` は、AudioSource の存在や設定を確認しながら、非破壊かつ Dry Run 優先で安全確認を進めるための Unity Editor ツールです。Runtime と Editor を分離し、package として導入しやすい最小構成を維持しています。
 
 ## 何ができるか
 
-- Unity Package としてツールを整理できます
-- `Editor` と `Runtime` を分離して保守しやすくできます
-- ドキュメント、サンプル、開発メモを同じ repo で管理できます
-- Dry Run や診断を先に考慮したツール設計の土台にできます
+- Unity Package として `Avatar Audio Safety Guard` をプロジェクトへ導入できます
+- `Runtime/` と `Editor/` を分離した状態で、診断処理と Editor 拡張を安全に育てられます
+- `Documentation~/` と `Samples~/` を含む標準的な package 骨組みをそのまま利用できます
+- Dry Run と診断ログを重視した実装方針を repo 全体で共有できます
 
-## 導入方法
+## 現在対応していること
 
-1. このテンプレートを複製して新しい repo を作成します。
-2. `package.json` の package 名、表示名、説明をツール名に合わせて変更します。
-3. asmdef 名、名前空間、README、ドキュメントをツール内容に合わせて置き換えます。
-4. Unity プロジェクトの Package Manager からローカルパッケージまたは Git URL として読み込みます。
-
-## 関連ファイル
-
-- パッケージ定義: [`package.json`](./package.json)
-- ライセンス: [`LICENSE`](./LICENSE)
-- Runtime asmdef: [`Runtime/Sebanne.ToolTemplate.asmdef`](./Runtime/Sebanne.ToolTemplate.asmdef)
-- Editor asmdef: [`Editor/Sebanne.ToolTemplate.Editor.asmdef`](./Editor/Sebanne.ToolTemplate.Editor.asmdef)
-- テンプレ確認ウィンドウ: [`Editor/ToolTemplateCheckWindow.cs`](./Editor/ToolTemplateCheckWindow.cs)
+- `AvatarAudioSafetySettings` をアバタールートに付与して設定を保持できます
+- Dry Run で AudioSource を走査し、一覧と簡易 Report Window で確認できます
+- Report Window では `すべて / 問題なし以外 / Build時に補正予定 / 報告のみ / 対象外 / 手動確認` のフィルタを使えます
+- Report Window は `AvatarAudioSafetySettings` に保持された最新の Dry Run 結果を参照して再表示できます
+- ObjectField 中心の一覧 UI で対象 GameObject を追える最小 UI を実装しています
+- NDMF Build pass で、動作モードが `Build時に補正` のときだけ build clone 側へ `Far / Gain / Volume` の補正を適用します
+- Build 時に `scanned / warnings / corrected_sources / report_only / ignored / manual_review` の要約ログを出します
 
 ## 使い方
 
-1. `Runtime/` に実行時に必要な型や共通ロジックを配置します。
-2. `Editor/` にメニュー、ウィンドウ、検証、変換処理などの Editor 拡張を配置します。
-3. `Documentation~/` に公開向けドキュメントや設計メモを追加します。
-4. `Samples~/Example/` に最小の使用例を置きます。
-
-## 動作確認
-
-1. Unity プロジェクトの Package Manager から、この repo をローカルパッケージとして読み込みます。
-2. Unity 上部メニューの `Tools/Sebanne Tool Template/Template Check Window` を開きます。
-3. ウィンドウ内の `確認ログを出す` ボタンを押し、Console に 1 行ログが出ることを確認します。
-
-## 新しいツールを作るときの置換ポイント
-
-- `ToolTemplate`
-- `com.sebanne.tool-template`
-- `Sebanne Tool Template`
+1. Unity の Package Manager から、この repo をローカルパッケージまたは Git URL として追加します。
+2. アバタールートに `AvatarAudioSafetySettings` を追加します。
+3. Inspector で Profile、Diagnostics、Per-Source Rules を必要に応じて設定します。
+4. `Scan Audio Sources` を押して Dry Run を実行し、Detected Audio Sources 一覧または `Open Report` で結果を確認します。
 
 ## Dry Run / 診断
 
-- 破壊的な処理を実装する前に Dry Run モードを用意し、対象件数や変更予定内容を先に確認できるようにします。
-- 実処理と診断処理のログ形式をそろえ、利用者が差分を追いやすいようにします。
-- 問題発生時は、対象、理由、回避策がログや UI から分かるようにします。
+- 現在の scan は非破壊で、AudioSource の走査と一覧更新だけを行います。
+- `Enabled` がオフでも Dry Run scan 自体は実行できます。Build 時は build clone への補正をスキップします。
+- 最新の Dry Run 結果は `AvatarAudioSafetySettings` に保持され、Report Window はその保存済み結果を読みます。
+- 動作モードが `診断のみ` のときは Build 時も変更しません。`Build時に補正` のときだけ、build clone 側へ補正します。
+- Build summary の `corrected_sources` は、補正された項目数ではなく「補正が入った AudioSource 件数」です。
+- 実際の診断や補正を追加する場合も、対象、変更予定、スキップ理由、失敗理由を追跡できるログ設計を優先します。
+- 既存データを直接壊さない方針を維持し、必要に応じてプレビュー、複製、退避を用意します。
 
 ## 制限事項
 
-- このテンプレート自体には具体的な機能実装は含まれていません。
-- VRChat SDK 依存コード、外部パッケージ依存、各種メニュー実装は未追加です。
-- 実運用前に Unity バージョン、依存関係、命名規則、ログ方針をプロジェクトに合わせて調整してください。
+- `Custom Rolloff` の自動補正はまだ行いません。`Manual Review` として扱います。
+- 波形解析や `AudioClip` 自体の加工はまだ未対応です。
+- `Near` や `Volumetric Radius` などの細かい補正はこれからです。
+- 公開向けドキュメントと Samples は骨組みのみで、具体的な使用例はこれから追加します。
 
 ## ライセンス
 
-このテンプレートは MIT License で提供します。詳細は `LICENSE` を参照してください。
+MIT License で提供します。詳細は `LICENSE` を参照してください。

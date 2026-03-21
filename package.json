@@ -1,10 +1,14 @@
 {
-  "name": "com.sebanne.tool-template",
-  "displayName": "Sebanne Tool Template",
+  "name": "com.sebanne.avatar-audio-safety-guard",
+  "displayName": "Avatar Audio Safety Guard",
   "version": "0.1.0",
   "unity": "2022.3",
-  "description": "VRChat向けUnity Editorツールのテンプレートです。",
+  "description": "VRChat アバター内の AudioSource を診断し、Build 時に安全側へ補正できる Unity Editor ツールです。",
   "author": {
     "name": "sebanne"
+  },
+  "vpmDependencies": {
+    "com.vrchat.avatars": ">=3.10.0",
+    "nadena.dev.ndmf": ">=1.11.0 <2.0.0-a"
   }
 }

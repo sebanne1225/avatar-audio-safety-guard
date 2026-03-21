@@ -1,0 +1,27 @@
+{
+  "name": "Sebanne.AvatarAudioSafetyGuard.Editor.NDMF",
+  "references": [
+    "Sebanne.AvatarAudioSafetyGuard",
+    "Sebanne.AvatarAudioSafetyGuard.Editor",
+    "nadena.dev.ndmf"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "AASG_HAS_NDMF"
+  ],
+  "versionDefines": [
+    {
+      "name": "nadena.dev.ndmf",
+      "expression": "",
+      "define": "AASG_HAS_NDMF"
+    }
+  ],
+  "noEngineReferences": false
+}

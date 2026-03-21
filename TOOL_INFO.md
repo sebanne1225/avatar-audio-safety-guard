@@ -2,29 +2,45 @@
 
 ## ツール名
 
-- Tool Template
+- Avatar Audio Safety Guard
 
 ## package名
 
-- `com.sebanne.tool-template`
+- `com.sebanne.avatar-audio-safety-guard`
 
 ## 表示名
 
-- `Sebanne Tool Template`
+- `Avatar Audio Safety Guard`
+
+## asmdef
+
+- Runtime: `Sebanne.AvatarAudioSafetyGuard`
+- Editor: `Sebanne.AvatarAudioSafetyGuard.Editor`
 
 ## 想定用途
 
-- VRChat 向け Unity Editor ツールの新規開発開始時に、配布しやすい package 構成を素早く用意する。
+- VRChat アバター内の AudioSource を診断し、Build 時に安全側へ補正できる Unity Editor ツールの基盤を提供する。
+
+## 現在対応していること
+
+- `AvatarAudioSafetySettings` で設定を保持できる
+- Dry Run で AudioSource 一覧を更新し、ObjectField から対象を追える
+- Report Window に `すべて / 問題なし以外 / Build時に補正予定 / 報告のみ / 対象外 / 手動確認` のフィルタがある
+- Report Window は `AvatarAudioSafetySettings` に保持された最新 Dry Run 結果を参照する
+- 簡易 Report Window の土台があり、Dry Run 一覧まで実装済み
+- NDMF Build pass で `Build時に補正` のときだけ build clone 側へ `Far / Gain / Volume` を補正する
+- Build 時に要約ログを出し、`診断のみ` では build clone を変更しない
 
 ## 非対応
 
-- 具体的な UI 実装
-- VRChat SDK 連携実装
-- 自動ビルドや CI 設定
+- `Custom Rolloff` の自動補正
+- 波形解析
+- `AudioClip` 加工
+- `Near` / `Volumetric Radius` の補正
 
 ## 今後やりたいこと
 
-- サンプル EditorWindow の追加
-- Dry Run 用の共通ログ基盤の追加
-- 設定アセットや検証ユーティリティの追加
-- ドキュメント雛形の拡充
+- AudioSource 診断ルールの追加
+- Dry Run 結果を見やすく出すログ基盤の追加
+- Build 時補正フローと安全確認 UI の追加
+- サンプルと公開ドキュメントの拡充
