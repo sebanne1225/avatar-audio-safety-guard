@@ -28,7 +28,8 @@
 ## Current Blocker
 - 明確な blocker は今はありません
 - 次に触る時は、診断 UI の軽量化を続けるのか、内部に残っている build result / session cache 周辺を整理するのかを最初に切り分けると安全です
-- 2026-03-25 時点で、repo 内の公開面 version drift は `1.0.2` に揃え直しています。次は repo 内最終確認のあと、Release -> listing -> VCC確認 -> BOOTH の順で進める想定です
+- 2026-03-25 時点で `1.0.2` の commit / push / GitHub Release までは完了しています
+- 次の主作業は repo 外です。live listing `index.json` ではまだ `1.0.0` までしか見えていないため、listing 反映確認 -> VCC確認 -> BOOTH 更新の順で見る想定です
 
 ## Rules
 - 非破壊
@@ -58,6 +59,10 @@
 - commit / push はしていない
 
 ## Resume Notes
+- `1.0.2` release:
+  - commit: `87ee2e2`
+  - tag / release title: `1.0.2`
+  - asset: `com.sebanne.avatar-audio-safety-guard-1.0.2.zip`
 - 設定保持と保存済み検出結果:
   - `Runtime/AvatarAudioSafetySettings.cs`
   - `Runtime/AvatarAudioSafetyModels.cs`
