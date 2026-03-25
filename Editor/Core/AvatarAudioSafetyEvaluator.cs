@@ -75,9 +75,12 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         public static AvatarAudioSafetyEvaluationRequest CreateRequest(
             AvatarAudioSafetySettings settings,
             AudioSource audioSource,
-            AvatarAudioThresholdPreset defaultThresholds)
+            AvatarAudioThresholdPreset defaultThresholds,
+            string pathOverride = null)
         {
-            string path = AvatarAudioSafetyPathUtility.GetRelativePath(settings.transform, audioSource.transform);
+            string path = !string.IsNullOrWhiteSpace(pathOverride)
+                ? AvatarAudioSafetyPathUtility.Normalize(pathOverride)
+                : AvatarAudioSafetyPathUtility.GetRelativePath(settings.transform, audioSource.transform);
             AvatarAudioSourceRuleEntry matchedRule = FindMatchingRule(settings.PerSourceRules, path);
             AvatarAudioSafetyRule appliedRule = matchedRule != null ? matchedRule.rule : AvatarAudioSafetyRule.Default;
             AvatarAudioThresholdPreset thresholds = ResolveThresholds(defaultThresholds, matchedRule);

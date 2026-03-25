@@ -1,7 +1,8 @@
 {
   "name": "Sebanne.AvatarAudioSafetyGuard.Editor",
   "references": [
-    "Sebanne.AvatarAudioSafetyGuard"
+    "Sebanne.AvatarAudioSafetyGuard",
+    "nadena.dev.ndmf.runtime"
   ],
   "includePlatforms": [
     "Editor"

@@ -35,6 +35,14 @@ namespace Sebanne.AvatarAudioSafetyGuard
         ManualReview = 5,
     }
 
+    public enum AvatarAudioSafetyBuildResultEntryStatus
+    {
+        Changed = 0,
+        Skipped = 1,
+        Unchanged = 2,
+        Error = 3,
+    }
+
     [Serializable]
     public sealed class AvatarAudioThresholdPreset
     {
@@ -265,6 +273,118 @@ namespace Sebanne.AvatarAudioSafetyGuard
                 reportOnly,
                 ignored,
                 manualReview);
+        }
+    }
+
+    [Serializable]
+    public sealed class AvatarAudioSafetyBuildResultEntry
+    {
+        public AvatarAudioSafetyBuildResultEntryStatus status = AvatarAudioSafetyBuildResultEntryStatus.Unchanged;
+        public AvatarAudioSafetyResultKind evaluationResult = AvatarAudioSafetyResultKind.Safe;
+        public AvatarAudioSafetyRule appliedRule = AvatarAudioSafetyRule.Default;
+        public string path = string.Empty;
+        public string clipName = string.Empty;
+        public string reason = string.Empty;
+        public string detail = string.Empty;
+        public string beforeSummary = string.Empty;
+        public string afterSummary = string.Empty;
+
+        public AvatarAudioSafetyBuildResultEntry Clone()
+        {
+            return new AvatarAudioSafetyBuildResultEntry
+            {
+                status = status,
+                evaluationResult = evaluationResult,
+                appliedRule = appliedRule,
+                path = path,
+                clipName = clipName,
+                reason = reason,
+                detail = detail,
+                beforeSummary = beforeSummary,
+                afterSummary = afterSummary,
+            };
+        }
+    }
+
+    [Serializable]
+    public sealed class AvatarAudioSafetyBuildResultSnapshot
+    {
+        public string executedLocalTime = string.Empty;
+        public string avatarName = string.Empty;
+        public AvatarAudioSafetyMode mode = AvatarAudioSafetyMode.PreviewOnly;
+        public string summaryMessage = string.Empty;
+        public int scanned;
+        public int changed;
+        public int skipped;
+        public int unchanged;
+        public int errors;
+        public List<AvatarAudioSafetyBuildResultEntry> entries = new List<AvatarAudioSafetyBuildResultEntry>();
+
+        public bool HasData
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(executedLocalTime)
+                    || !string.IsNullOrEmpty(summaryMessage)
+                    || scanned > 0
+                    || changed > 0
+                    || skipped > 0
+                    || unchanged > 0
+                    || errors > 0
+                    || (entries != null && entries.Count > 0);
+            }
+        }
+
+        public void Reset()
+        {
+            executedLocalTime = string.Empty;
+            avatarName = string.Empty;
+            mode = AvatarAudioSafetyMode.PreviewOnly;
+            summaryMessage = string.Empty;
+            scanned = 0;
+            changed = 0;
+            skipped = 0;
+            unchanged = 0;
+            errors = 0;
+
+            if (entries == null)
+            {
+                entries = new List<AvatarAudioSafetyBuildResultEntry>();
+            }
+            else
+            {
+                entries.Clear();
+            }
+        }
+
+        public AvatarAudioSafetyBuildResultSnapshot Clone()
+        {
+            AvatarAudioSafetyBuildResultSnapshot clone = new AvatarAudioSafetyBuildResultSnapshot
+            {
+                executedLocalTime = executedLocalTime,
+                avatarName = avatarName,
+                mode = mode,
+                summaryMessage = summaryMessage,
+                scanned = scanned,
+                changed = changed,
+                skipped = skipped,
+                unchanged = unchanged,
+                errors = errors,
+            };
+
+            if (entries != null)
+            {
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    AvatarAudioSafetyBuildResultEntry entry = entries[i];
+                    if (entry != null)
+                    {
+                        clone.entries.Add(entry.Clone());
+                    }
+                }
+            }
+
+            return clone;
         }
     }
 }

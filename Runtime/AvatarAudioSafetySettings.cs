@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using nadena.dev.ndmf;
 using UnityEngine;
 
 namespace Sebanne.AvatarAudioSafetyGuard
 {
     [DisallowMultipleComponent]
     [AddComponentMenu("Avatar Audio Safety Guard/Avatar Audio Safety Settings")]
-    public sealed class AvatarAudioSafetySettings : MonoBehaviour
+    public sealed class AvatarAudioSafetySettings : MonoBehaviour, INDMFEditorOnly
     {
         [SerializeField]
         private bool toolEnabled = true;
@@ -39,6 +40,12 @@ namespace Sebanne.AvatarAudioSafetyGuard
 
         [SerializeField]
         private List<AvatarAudioScanResult> detectedAudioSources = new List<AvatarAudioScanResult>();
+
+        [SerializeField]
+        private string sourceSettingsGlobalId = string.Empty;
+
+        [SerializeField]
+        private AvatarAudioSafetyBuildResultSnapshot lastBuildResult = new AvatarAudioSafetyBuildResultSnapshot();
 
         public bool ToolEnabled
         {
@@ -100,6 +107,16 @@ namespace Sebanne.AvatarAudioSafetyGuard
             get { return detectedAudioSources; }
         }
 
+        public string SourceSettingsGlobalId
+        {
+            get { return sourceSettingsGlobalId; }
+        }
+
+        public AvatarAudioSafetyBuildResultSnapshot LastBuildResult
+        {
+            get { return lastBuildResult; }
+        }
+
         public AvatarAudioThresholdPreset ResolveDefaultThresholds()
         {
             EnsureDefaults();
@@ -141,6 +158,31 @@ namespace Sebanne.AvatarAudioSafetyGuard
             lastScanSummary.Reset();
         }
 
+        public void SetSourceSettingsGlobalId(string globalId)
+        {
+            sourceSettingsGlobalId = globalId ?? string.Empty;
+        }
+
+        public void SetLastBuildResult(AvatarAudioSafetyBuildResultSnapshot snapshot)
+        {
+            EnsureDefaults();
+
+            if (snapshot != null)
+            {
+                lastBuildResult = snapshot.Clone();
+            }
+            else
+            {
+                lastBuildResult.Reset();
+            }
+        }
+
+        public void ClearLastBuildResult()
+        {
+            EnsureDefaults();
+            lastBuildResult.Reset();
+        }
+
         private void Reset()
         {
             EnsureDefaults();
@@ -171,6 +213,11 @@ namespace Sebanne.AvatarAudioSafetyGuard
             if (lastScanSummary == null)
             {
                 lastScanSummary = new AvatarAudioScanSummary();
+            }
+
+            if (lastBuildResult == null)
+            {
+                lastBuildResult = new AvatarAudioSafetyBuildResultSnapshot();
             }
 
             for (int i = 0; i < perSourceRules.Count; i++)

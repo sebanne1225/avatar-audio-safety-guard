@@ -1,6 +1,8 @@
 {
   "name": "Sebanne.AvatarAudioSafetyGuard",
-  "references": [],
+  "references": [
+    "nadena.dev.ndmf.runtime"
+  ],
   "includePlatforms": [],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

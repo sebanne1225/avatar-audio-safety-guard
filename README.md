@@ -36,12 +36,12 @@
 
 参考ページ (`VCC` 追加先ではありません): `https://sebanne1225.github.io/sebanne-listing/`
 
-### 補助: GitHub / Git URL から導入
+### 補助: Git URL / Release zip から導入
 
 - repo: `https://github.com/sebanne1225/avatar-audio-safety-guard`
 - Git URL や local package での導入は、開発確認や手動検証向けの補助導線です
-- この方法では `VRChat Avatars` と `NDMF` の依存解決を自分で確認する必要があります
-- GitHub Release には `com.sebanne.avatar-audio-safety-guard-1.0.1.zip` を添付します。zip 展開後の直下に `package.json` が見える package 構成です。
+- GitHub Release の zip も補助導線として使えます。`com.sebanne.avatar-audio-safety-guard-1.0.2.zip` を展開すると、直下に `package.json` が見える package 構成です
+- これらの補助導線では、`VRChat Avatars` と `NDMF` の依存解決を自分で確認する必要があります
 
 ## 基本的な使い方
 
@@ -62,7 +62,7 @@
 
 ## 制限事項
 
-- `Custom Rolloff` の自動補正は行いません。`手動確認` として扱います。
+- `Custom Rolloff` の自動補正は行いません。`手動確認` は、自動補正せず手動で設定を見直す対象です。
 - `VRC Spatial Audio Source` が未設定の AudioSource は警告できますが、自動追加はしません。
 - `Near` と `Volumetric Radius` は、現在の有効 `Far` を超えている場合だけ build clone 側で補正します。個別の上限値はまだ設定できません。
 - 波形解析や `AudioClip` 自体の加工は未対応です。

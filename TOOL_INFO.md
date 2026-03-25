@@ -9,7 +9,7 @@
 - 表示名: `Avatar Audio Safety Guard`
 - Runtime asmdef: `Sebanne.AvatarAudioSafetyGuard`
 - Editor asmdef: `Sebanne.AvatarAudioSafetyGuard.Editor`
-- 現在 version: `1.0.1`
+- 現在 version: `1.0.2`
 
 ## 公開メタ情報
 

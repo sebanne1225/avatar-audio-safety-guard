@@ -1,6 +1,6 @@
 Avatar Audio Safety Guard
 BOOTH 配布パッケージ案内
-version: 1.0.1
+version: 1.0.2
 
 このツールは、VRChat アバター内の AudioSource を診断し、
 公開前に危険な設定や過大な値を見つけやすくする Unity / VRChat 向けツールです。

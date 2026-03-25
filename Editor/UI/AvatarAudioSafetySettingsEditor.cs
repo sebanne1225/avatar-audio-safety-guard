@@ -35,18 +35,21 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         {
             AvatarAudioSafetySettings settings = (AvatarAudioSafetySettings)target;
             AvatarAudioSafetySessionState.RememberSettings(settings);
+            string previousClassificationSignature = AvatarAudioSafetyScanActions.GetClassificationSignature(settings);
 
             serializedObject.Update();
-
             DrawSection(AvatarAudioSafetyUiText.BasicSectionTitle, AvatarAudioSafetyUiText.BasicSectionDescription, DrawBasicSection);
-            DrawSection(AvatarAudioSafetyUiText.ThresholdSectionTitle, AvatarAudioSafetyUiText.ThresholdSectionDescription, () => DrawThresholdSection(settings));
-            DrawSection(AvatarAudioSafetyUiText.DiagnosticsSectionTitle, AvatarAudioSafetyUiText.DiagnosticsSectionDescription, DrawDiagnosticsSection);
-            DrawSection(AvatarAudioSafetyUiText.PerSourceRulesSectionTitle, AvatarAudioSafetyUiText.PerSourceRulesSectionDescription, () => DrawPerSourceRulesSection(settings));
-
             serializedObject.ApplyModifiedProperties();
 
             DrawSection(AvatarAudioSafetyUiText.ToolsSectionTitle, AvatarAudioSafetyUiText.ToolsSectionDescription, () => DrawToolsSection(settings));
             DrawSection(AvatarAudioSafetyUiText.DetectedAudioSourcesSectionTitle, AvatarAudioSafetyUiText.DetectedAudioSourcesSectionDescription, () => DrawDetectedAudioSourcesSection(settings));
+
+            serializedObject.Update();
+            DrawSection(AvatarAudioSafetyUiText.PerSourceRulesSectionTitle, AvatarAudioSafetyUiText.PerSourceRulesSectionDescription, () => DrawPerSourceRulesSection(settings));
+            DrawSection(AvatarAudioSafetyUiText.ThresholdSectionTitle, AvatarAudioSafetyUiText.ThresholdSectionDescription, () => DrawThresholdSection(settings));
+            DrawSection(AvatarAudioSafetyUiText.DiagnosticsSectionTitle, AvatarAudioSafetyUiText.DiagnosticsSectionDescription, DrawDiagnosticsSection);
+            serializedObject.ApplyModifiedProperties();
+            AvatarAudioSafetyScanActions.RefreshDetectedResultsIfClassificationChanged(settings, previousClassificationSignature);
         }
 
         private void DrawBasicSection()
@@ -98,12 +101,13 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
         private void DrawPerSourceRulesSection(AvatarAudioSafetySettings settings)
         {
             DrawDescription(AvatarAudioSafetyUiText.PathRuleHelpText);
+            DrawDescription(AvatarAudioSafetyUiText.PerSourceRulesReportAddHint);
 
             if (GUILayout.Button(AvatarAudioSafetyUiText.AddRuleButton))
             {
                 int newIndex = perSourceRulesProperty.arraySize;
                 perSourceRulesProperty.InsertArrayElementAtIndex(newIndex);
-                InitializeRuleElement(perSourceRulesProperty.GetArrayElementAtIndex(newIndex));
+                AvatarAudioSafetyRuleActions.InitializeRuleElement(perSourceRulesProperty.GetArrayElementAtIndex(newIndex));
             }
 
             if (perSourceRulesProperty.arraySize == 0)
@@ -298,46 +302,13 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
             return target != null ? target.gameObject : null;
         }
 
-        private static void InitializeRuleElement(SerializedProperty element)
-        {
-            if (element == null)
-            {
-                return;
-            }
-
-            AvatarAudioThresholdPreset defaults = AvatarAudioThresholdPresets.CreateCustomDefault();
-
-            element.FindPropertyRelative("path").stringValue = string.Empty;
-            element.FindPropertyRelative("rule").enumValueIndex = (int)AvatarAudioSafetyRule.Default;
-            element.FindPropertyRelative("memo").stringValue = string.Empty;
-
-            SerializedProperty thresholds = element.FindPropertyRelative("customThresholds");
-            if (thresholds != null)
-            {
-                thresholds.FindPropertyRelative("maxGain").floatValue = defaults.maxGain;
-                thresholds.FindPropertyRelative("maxFarDistance").floatValue = defaults.maxFarDistance;
-                thresholds.FindPropertyRelative("maxVolume").floatValue = defaults.maxVolume;
-            }
-        }
-
         private void RunDryRunScan(AvatarAudioSafetySettings settings)
         {
-            if (settings == null)
+            if (AvatarAudioSafetyScanActions.RunDryRun(settings))
             {
-                return;
+                AvatarAudioSafetyUiFeedback.ShowInfoDialog(
+                    AvatarAudioSafetyUiText.GetScanCompletedDialogMessage(settings != null ? settings.DetectedAudioSources : null));
             }
-
-            AvatarAudioSafetyScanReport report = AvatarAudioSafetyScanner.Scan(settings);
-            AvatarAudioSafetySessionState.RememberSettings(settings);
-
-            Undo.RecordObject(settings, "Avatar Audio Safety Guard Dry Run");
-            settings.SetScanResults(report.Results, report.Summary);
-            EditorUtility.SetDirty(settings);
-            PrefabUtility.RecordPrefabInstancePropertyModifications(settings);
-
-            Debug.Log(
-                "[Avatar Audio Safety Guard] Dry Run 走査が完了しました。 " + AvatarAudioSafetyUiText.GetSummaryText(report.Summary),
-                settings);
         }
 
         private void ClearResults(AvatarAudioSafetySettings settings)
@@ -347,10 +318,16 @@ namespace Sebanne.AvatarAudioSafetyGuard.Editor
                 return;
             }
 
+            if (!AvatarAudioSafetyUiFeedback.ConfirmClearResults())
+            {
+                return;
+            }
+
             Undo.RecordObject(settings, "Avatar Audio Safety Guard Clear Results");
             settings.ClearScanResults();
             EditorUtility.SetDirty(settings);
             PrefabUtility.RecordPrefabInstancePropertyModifications(settings);
         }
+
     }
 }
