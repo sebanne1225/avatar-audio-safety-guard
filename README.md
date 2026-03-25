@@ -1,13 +1,14 @@
 # Avatar Audio Safety Guard
 
-`Avatar Audio Safety Guard` は、VRChat アバター内の AudioSource を Dry Run で診断し、必要に応じて Build 時だけ build clone 側へ安全側の補正を適用できる Unity Editor ツールです。
+`Avatar Audio Safety Guard` は、NDMF ベースで VRChat アバター内の AudioSource を Dry Run で診断し、必要に応じて Build 時だけ build clone 側へ安全側の補正を適用できる Unity Editor ツールです。
 
-音量や到達距離の設定ミスを Build 前に見つけたいときや、scene / prefab 本体を触らずに Build 時だけ補正したいときに使えます。
+NDMF ベースの Build 導線に合わせて、scene / prefab 本体を触らずに Build 時だけ補正したいときや、音量や到達距離の設定ミスを Build 前に見つけたいときに使えます。
 
 ## 何を解決するツールか
 
 - アバター内の AudioSource 設定を Build 前に一覧で確認できます
 - 問題がありそうな音源だけを Dry Run で洗い出せます
+- NDMF ベースの Build 導線で、元アバターを直接書き換えずに扱えます
 - 実データは触らず、必要な補正だけを Build 時に build clone 側へ適用できます
 
 ## 何ができるか

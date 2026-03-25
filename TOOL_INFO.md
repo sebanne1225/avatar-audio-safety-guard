@@ -23,6 +23,7 @@
 
 ## 公開スコープの要約
 
+- NDMF ベースの Build 連携で、Build 時だけ build clone 側へ補正できる
 - `AvatarAudioSafetySettings` で設定を保持できる
 - Dry Run で AudioSource を走査し、Inspector 一覧と `診断レポート` で確認できる
 - `Build時に補正` のときだけ build clone 側へ `Far / Near / Volumetric Radius / Gain / Volume` を補正する
