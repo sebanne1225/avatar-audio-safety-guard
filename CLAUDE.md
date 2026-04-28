@@ -40,7 +40,6 @@
 - build clone 側の処理と source/original 側の設定保持を混同しない
 - UI 改修では、まず既存の保存済み結果と再判定フローを活かす
 - まず短い plan を出してから作業
-- まだ commit / push はしない
 
 ## Key Files
 
