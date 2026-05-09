@@ -8,7 +8,7 @@
 ## Current State
 
 - repo root が package source of truth です。`Runtime/`、`Editor/`、`README.md`、`CHANGELOG.md`、release workflow まで揃っています。
-- `package.json` は `1.0.2`、ローカル HEAD は `a2e9bdd` (`master`) です。tag は `1.0.2` まであります。
+- `package.json` は `1.0.2` です。tag は `1.0.2` まであります。
 - `Runtime/AvatarAudioSafetySettings.cs` が設定保持の中心で、mode / profile / per-source rule / scan result / source settings id / last build result snapshot を持ちます。
 - Inspector (`Editor/UI/AvatarAudioSafetySettingsEditor.cs`) から Dry Run、保存済み結果の閲覧、個別ルール編集、threshold 編集、診断オプション編集ができます。
 - AudioSource の再検出は明示的な `AudioSource を走査` で行います。既存の保存済み結果に対する分類更新は、設定変更時の再判定で更新する分離を維持しています。
@@ -63,6 +63,5 @@
 - package: `com.sebanne.avatar-audio-safety-guard`
 - version: `1.0.2`
 - latest tag: `1.0.2`
-- HEAD: `a2e9bdd` (`master`)
 - release asset 名: `com.sebanne.avatar-audio-safety-guard-1.0.2.zip`
 - Build 結果まわりを整理するなら、先に `Runtime/AvatarAudioSafetyModels.cs` と `Editor/Utility/AvatarAudioSafetySessionState.cs` の参照元確認から始めると安全です。
