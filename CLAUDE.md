@@ -41,26 +41,7 @@
 - UI 改修では、まず既存の保存済み結果と再判定フローを活かす
 - まず短い plan を出してから作業
 
-## Key Files
-
-- `Runtime/AvatarAudioSafetySettings.cs`
-- `Runtime/AvatarAudioSafetyModels.cs`
-- `Editor/Core/AvatarAudioSafetyScanner.cs`
-- `Editor/Core/AvatarAudioSafetyEvaluator.cs`
-- `Editor/Core/AvatarAudioSafetyBuildProcessor.cs`
-- `Editor/Core/AvatarAudioSafetyBuildPlanner.cs`
-- `Editor/UI/AvatarAudioSafetySettingsEditor.cs`
-- `Editor/UI/AvatarAudioSafetyReportWindow.cs`
-- `Editor/UI/AvatarAudioSafetyResultTable.cs`
-- `Editor/NDMF/AvatarAudioSafetyBuildPlugin.cs`
-- `Editor/NDMF/AvatarAudioSafetySourceSettingsPreBuildHook.cs`
-- `Editor/NDMF/AvatarAudioSafetyNdmfConsoleReporter.cs`
-- `Editor/Utility/AvatarAudioSafetySessionState.cs`
-- `Editor/AvatarAudioSafetyGuardCheckWindow.cs`
-
 ## Resume Notes
 
-- package: `com.sebanne.avatar-audio-safety-guard`
 - tag 履歴（追記 only）: `1.0.0` (2026-03-21) → `1.0.1` (2026-03-21) → `1.0.2` (2026-03-25)
-- release asset 名の形式: `com.sebanne.avatar-audio-safety-guard-{version}.zip`（version は最新 tag = `package.json` と一致。release workflow が検証）
 - Build 結果まわりを整理するなら、先に `Runtime/AvatarAudioSafetyModels.cs` と `Editor/Utility/AvatarAudioSafetySessionState.cs` の参照元確認から始めると安全です。
